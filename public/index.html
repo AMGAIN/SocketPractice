@@ -5,15 +5,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat APP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body>
-    <h1>Chatting</h1>
-
-    <input type="text" id="message" placeholder="Enter message">
-    <button id="sendBtn"> send</button>
-
-    <div id="messages"></div>
+    <div class="flex flex-col items-center justify-center text-white min-h-screen bg-gray-900 p-4 space-y-4">
+        <!-- Heading -->
+        <h1 class="text-3xl font-bold underline text-white">Chatting</h1>
+        <!-- Chat container -->
+        <div class="relative w-full max-w-2xl h-[600px] bg-gray-800 rounded-xl shadow-lg p-4 flex flex-col">
+            <!-- Messages area -->
+            <div id="messages" class="flex-1 overflow-y-auto mb-20 p-2 space-y-2">
+                <!-- Individual messages will appear here -->
+            </div>
+            <!-- Input area fixed at bottom -->
+            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-full max-w-2xl flex gap-2">
+                <input id="message" type="text" placeholder="Enter message"
+                    class="flex-1 p-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-500">
+                <button id="sendBtn"
+                    class="flex justify-between items-center w-20 px-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition">
+                    <div>
+                        Send
+                    </div>
+                    <img class="h-5 w-5" src="./Assets/send.png" alt="send button">
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -22,6 +40,11 @@
         const messageInput = document.getElementById("message");
         const allMessages = document.getElementById('messages');
 
+        messageInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                sendBtn.click();
+            }
+        });
         socket.on('message', (message) => {
             const p = document.createElement('p');
             p.innerHTML = `${message}`;
