@@ -45,14 +45,26 @@
                 sendBtn.click();
             }
         });
-        socket.on('message', (message) => {
-            const p = document.createElement('p');
-            p.innerHTML = `${message}`;
-            allMessages.appendChild(p);
+        socket.on('message', (data) => {
+            const msgRow = document.createElement('div');
+            msgRow.className = "flex items-center gap-2 mb-2";
+
+            const user = document.createElement('span');
+            user.className = "p-2 bg-red-400 rounded-md border-l-4 inline border-red-500";
+            user.textContent = `USER${data.userNo}`;
+
+            const span = document.createElement('span');
+            span.className = "p-2 bg-blue-400 rounded-md border-l-4 inline border-blue-500";
+            span.textContent = `${data.text}`;
+
+            msgRow.appendChild(user);
+            msgRow.appendChild(span);
+            allMessages.appendChild(msgRow);
             console.log(message);
         })
         sendBtn.addEventListener("click", e => {
             const message = messageInput.value;
+            messageInput.value = "";
             // console.log(message);
 
             socket.emit('user-message', message);

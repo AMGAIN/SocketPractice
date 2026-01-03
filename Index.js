@@ -7,11 +7,18 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
+
+let userCount = 0;
 //Socket.io
 io.on('connection', (socket) =>{
+    userCount ++;
+    socket.userNum = userCount;
     socket.on('user-message', (message)=>{
-        io.emit('message', message);
-        console.log('A new user message: ', message);
+        io.emit('message', {
+            text: message,
+            userNo: socket.userNum
+        });
+        console.log(`The user ${socket.userNum} message: `, message);
     })
 });
 
